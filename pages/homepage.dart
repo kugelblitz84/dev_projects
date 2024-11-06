@@ -1,22 +1,32 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:first_project/pages/signin.dart';
+import 'package:first_project/pages/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class homepage extends StatefulWidget {
   bool isLoggedIn;
   String username;
 
-  homepage({super.key, required this.isLoggedIn, required this.username});
+  homepage({super.key,required this.isLoggedIn,required this.username});
 
   @override
   State<homepage> createState() => _homepageState();
 }
 
 class _homepageState extends State<homepage> {
-  bool get isLoggedIn => widget.isLoggedIn;
-  String get username => widget.username;
-
+  late bool _isLoggedIn;
+  late var _username;
+  // bool get isLoggedIn => _isLoggedIn;
+  // String get username => _username;
   @override
+void initState() {
+    super.initState();
+    _isLoggedIn = widget.isLoggedIn;
+    _username = widget.username;
+}
+ 
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
@@ -38,19 +48,16 @@ class _homepageState extends State<homepage> {
                 // Navigate to destinations page
               },
             ),
-            if (isLoggedIn)
+            if (_isLoggedIn)
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text("Log Out"),
                 onTap: () {
                   setState(() {
-                    //Navigator.pop(context);
-                    Navigator.pushNamed(
-                      context,
-                      './homepage',
-                      arguments: {'isLoggedIn': false, 'username': ''},
-                    );
-                  });
+                    _isLoggedIn = false;
+                    _username = '';
+                  })
+                  ;Get.back();
                   // Handle log out (You may need to use some state management here)
                 },
               )
@@ -66,7 +73,7 @@ class _homepageState extends State<homepage> {
           ),
         ),
         actions: <Widget>[
-          if (!isLoggedIn)
+          if (!_isLoggedIn)
             SizedBox(
               height: 40,
               width: 90,
@@ -74,13 +81,14 @@ class _homepageState extends State<homepage> {
                 hoverElevation: 5,
                 backgroundColor: Colors.white,
                 onPressed: () {
-                  Navigator.pushNamed(context, './signup');
+                  //Navigator.pushNamed(context, './signup');
+                  Get.to(signup());
                 },
                 elevation: 0,
                 child: Text('Sign Up'),
               ),
             ),
-          if (!isLoggedIn)
+          if (!_isLoggedIn)
             SizedBox(
               height: 40,
               width: 90,
@@ -88,7 +96,7 @@ class _homepageState extends State<homepage> {
                 hoverElevation: 5,
                 backgroundColor: Colors.white,
                 onPressed: () {
-                  Navigator.pushNamed(context, './signin');
+                  Get.to(signin());
                 },
                 elevation: 0,
                 child: Text('Sign In'),
@@ -114,7 +122,7 @@ class _homepageState extends State<homepage> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    username,
+                    _username,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
