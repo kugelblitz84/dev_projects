@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:ui';
+import 'package:first_project/pages/homepage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class signin extends StatefulWidget {
   @override
@@ -16,7 +18,6 @@ class _signinState extends State<signin> {
   // final TextEditingController _emailController = TextEditingController();
   // final TextEditingController _passwordController = TextEditingController();
 
-  @override
   // void dispose() {
   //   // Dispose controllers to free up resources
   //   _emailController.dispose();
@@ -118,16 +119,9 @@ class _signinState extends State<signin> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle sign-in action
                         setState(() {
-                          Navigator.pushNamed(
-                          context,
-                          './homepage',
-                          arguments: {
-                            'isLoggedIn': true,
-                            'username': 'Sazzad'
-                          },
-                        );
+                          Get.to(
+                              homepage(isLoggedIn: true, username: 'sazzad'));
                         });
                       },
                       style: ElevatedButton.styleFrom(
