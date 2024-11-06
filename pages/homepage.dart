@@ -112,7 +112,8 @@ void initState() {
                 elevation: 0,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, './user_profile');
+                Get.to(user_profile());
+                //Navigator.pushNamed(context, './user_profile');
               },
               child: Row(
                 children: [
