@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:first_project/pages/homepage.dart';
-import 'package:first_project/pages/signup.dart';
-import 'package:first_project/pages/signin.dart';
-import 'package:first_project/pages/user_profile.dart';
+// import 'package:first_project/pages/signup.dart';
+// import 'package:first_project/pages/signin.dart';
+// import 'package:first_project/pages/user_profile.dart';
+import 'package:get/get.dart';
 void main(){
   runApp(const counter());
 }
@@ -12,15 +14,14 @@ class counter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+//      routes: {
+//        './homepage': (context) => homepage(isLoggedIn: true, username:""), this shit not neede
+//        './signup': (context) => signup(),
+//       './signin': (context) => signin(),
+//        './user_profile': (context) => user_profile(),
       debugShowCheckedModeBanner: false,
-      routes: {
-        './homepage': (context) => homepage(isLoggedIn: true, username:""),
-        './signup': (context) => signup(),
-        './signin': (context) => signin(),
-        './user_profile': (context) => user_profile(),
-      },
-      home: homepage(isLoggedIn: true, username:""),
+      home: homepage(isLoggedIn: true, username:"demo"),
     );
   }
 }
