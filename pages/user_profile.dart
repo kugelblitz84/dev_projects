@@ -183,12 +183,13 @@ class AnimatedBlogCard extends StatefulWidget {
   final String location;
   final String imageUrl;
 
-  const AnimatedBlogCard({
-    Key? key,
-    required this.title,
-    required this.location,
-    required this.imageUrl,
-  }) : super(key: key);
+  // const AnimatedBlogCard({
+  //   Key? key,
+  //   required this.title,
+  //   required this.location,
+  //   required this.imageUrl,
+  // }) : super(key: key);
+  const AnimatedBlogCard({super.key, required this.title, required this.location, required this.imageUrl});
 
   @override
   _AnimatedBlogCardState createState() => _AnimatedBlogCardState();
@@ -213,20 +214,19 @@ class _AnimatedBlogCardState extends State<AnimatedBlogCard> with SingleTickerPr
         curve: Interval(0.2, 1.0, curve: Curves.linear), // 20% delay
       ),
     );
-
-    // Start the animation after a delay of 1 second
-    Future.delayed(Duration(seconds: 1), () {
-      _controller.repeat(); // Loop the animation
-    });
+   _controller.repeat(); 
+    // Future.delayed(Duration(seconds: 1), () {
+    //   _controller.repeat(); // Loop the animation
+    // });
   }
 
-  @override
+  //@override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  @override
+  //@override
   Widget build(BuildContext context) {
     return Container(
       width: Get.width * 0.4,
@@ -281,3 +281,4 @@ class _AnimatedBlogCardState extends State<AnimatedBlogCard> with SingleTickerPr
     );
   }
 }
+
