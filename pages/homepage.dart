@@ -2,8 +2,15 @@
 
 import 'package:first_project/pages/signin.dart';
 import 'package:first_project/pages/signup.dart';
+import 'package:first_project/pages/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:math';
+
+int toggle = 0;
+String searched = "";
+late bool _isLoggedIn ;
+var _username;
 
 class homepage extends StatefulWidget {
   bool isLoggedIn;
@@ -16,8 +23,7 @@ class homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<homepage> {
-  late bool _isLoggedIn;
-  late var _username;
+
   // bool get isLoggedIn => _isLoggedIn;
   // String get username => _username;
   @override
@@ -32,8 +38,9 @@ void initState() {
       drawer: Drawer(
         backgroundColor: Colors.purple[50],
         child: Column(
-          children: [
+          children: [           
             DrawerHeader(child: Icon(Icons.favorite)),
+            AnimatedSearch(),
             ListTile(
               leading: Icon(Icons.camera),
               title: Text("V L O G S"),
@@ -64,6 +71,14 @@ void initState() {
           ],
         ),
       ),
+      onDrawerChanged: (isOpen) {
+        if (!isOpen) {
+          setState(() {
+            toggle = 0; 
+            searched = "";
+          });
+        }
+      },
       appBar: AppBar(
         title: Text(
           "Logo",
@@ -88,6 +103,7 @@ void initState() {
                 child: Text('Sign Up'),
               ),
             ),
+            SizedBox(width: 5,),
           if (!_isLoggedIn)
             SizedBox(
               height: 40,
@@ -104,40 +120,44 @@ void initState() {
             )
           else
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              onPressed: () {
-                Get.to(user_profile());
-                //Navigator.pushNamed(context, './user_profile');
-              },
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 18,
-                    backgroundImage: AssetImage('assets/profile_image.png'),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    _username,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
+              elevation: 5,
             ),
-          IconButton(
             onPressed: () {
-              // Search functionality (currently empty)
+              Get.to(user_profile());
+              // Add onPressed functionality here
             },
-            icon: Icon(Icons.search),
+            child: const Row(
+              children: [
+                CircleAvatar(
+                  radius: 18,
+                  backgroundImage: AssetImage(
+                      'assets/profile_image.png'), // Replace with your image asset
+                ),
+                SizedBox(width: 5),
+                Text(
+                  'Sazzad',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           ),
+          // IconButton(
+          //   onPressed: () {
+
+          //     // Search functionality (currently empty)
+          //   },
+          //   icon: Icon(Icons.search),
+          // ),
+          SizedBox(width: 5),
+          
         ],
       ),
       body: SingleChildScrollView(
@@ -196,6 +216,7 @@ void initState() {
                 ],
               ),
             ),
+            
             // Destinations and Travel Blog Sections
             Container(
               height: 150,
@@ -229,6 +250,7 @@ void initState() {
                 ),
               ),
             ),
+            SizedBox(height: 10,),
             Footer(),
           ],
         ),
@@ -319,5 +341,160 @@ class FooterColumn extends StatelessWidget {
             )),
       ],
     );
+  }
+}
+
+class AnimatedSearch extends StatefulWidget {
+  const AnimatedSearch({super.key});
+  @override
+  _AnimatedSearchState createState() => _AnimatedSearchState();
+}
+
+
+class _AnimatedSearchState extends State<AnimatedSearch> with SingleTickerProviderStateMixin {
+  late AnimationController _con;
+  late TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController = TextEditingController();
+    _con = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 375),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Colors.purple[50],
+        child: Center(
+          child: Container(
+            height: 100.0,
+            width: 250.0,
+            alignment: Alignment(-1.0, 0.0),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 375),
+              height: 40.0,
+              width: (toggle == 0) ? 48.0 : 250.0,
+              curve: Curves.easeOut,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    spreadRadius: -10.0,
+                    blurRadius: 10.0,
+                    offset: Offset(0.0, 10.0),
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  AnimatedPositioned(
+                    duration: Duration(milliseconds: 375),
+                    top: 6.0,
+                    right: 7.0,
+                    curve: Curves.easeOut,
+                    child: AnimatedOpacity(
+                      opacity: (toggle == 0) ? 0.0 : 1.0,
+                      duration: Duration(milliseconds: 200),
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xffF2F3F7),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: AnimatedBuilder(
+                          child: Icon(
+                            Icons.mic,
+                            size: 20.0,
+                          ),
+                          builder: (context, widget) {
+                            return Transform.rotate(
+                              angle: _con.value * 2.0 * pi,
+                              child: widget,
+                            );
+                          },
+                          animation: _con,
+                        ),
+                      ),
+                    ),
+                  ),
+                  AnimatedPositioned(
+                    duration: Duration(milliseconds: 375),
+                    left: (toggle == 0) ? 20.0 : 40.0,
+                    curve: Curves.easeOut,
+                    top: 4.0,
+                    child: AnimatedOpacity(
+                      opacity: (toggle == 0) ? 0.0 : 1.0,
+                      duration: Duration(milliseconds: 200),
+                      child: Container(
+                        height: 23.0,
+                        width: 180.0,
+                        child: TextField(
+                          controller: _textEditingController,
+                          cursorRadius: Radius.circular(10.0),
+                          cursorWidth: 2.0,
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            labelText: 'Search...',
+                            labelStyle: TextStyle(
+                              color: Color(0xff5B5B5B),
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            alignLabelWithHint: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              searched = value;
+                              //print(searched);
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Material(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: IconButton(
+                      splashRadius: 19.0,
+                      icon: Icon(
+                        Icons.search,
+                        size: 23.0,
+                      ),
+                      onPressed: () {
+                        setState(
+                          () {
+                            if (toggle == 0) {
+                              toggle = 1;
+                              _con.forward();
+                            } else {
+                              toggle = 0;
+                              _textEditingController.clear();
+                              searched = "";
+                              _con.reverse();
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+   
   }
 }
