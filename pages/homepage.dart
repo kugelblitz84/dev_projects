@@ -31,459 +31,466 @@ class _homepageState extends State<homepage> {
 
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      drawer: Drawer(
-        backgroundColor: Colors.purple[50],
-        child: Column(
-          children: [
-            DrawerHeader(child: Icon(Icons.favorite)),
-            ListTile(
-              leading: Icon(Icons.camera),
-              title: Text("V L O G S"),
-              onTap: () {
-                // Navigate to the Vlogs page
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.map),
-              title: Text("D E S T I N A T I O N S"),
-              onTap: () {
-                // Navigate to destinations page
-              },
-            ),
-            if (_isLoggedIn)
+    return GestureDetector(
+      
+      onTap: (){
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        
+        drawer: Drawer(
+          backgroundColor: Colors.purple[50],
+          child: Column(
+            children: [
+              DrawerHeader(child: Icon(Icons.favorite)),
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text("Log Out"),
+                leading: Icon(Icons.camera),
+                title: Text("V L O G S"),
                 onTap: () {
-                  setState(() {
-                    _isLoggedIn = false;
-                    _username = '';
-                    Get.back();
-                  });
-
-                  // Handle log out (You may need to use some state management here)
+                  // Navigate to the Vlogs page
                 },
+              ),
+              ListTile(
+                leading: Icon(Icons.map),
+                title: Text("D E S T I N A T I O N S"),
+                onTap: () {
+                  // Navigate to destinations page
+                },
+              ),
+              if (_isLoggedIn)
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text("Log Out"),
+                  onTap: () {
+                    setState(() {
+                      _isLoggedIn = false;
+                      _username = '';
+                      Get.back();
+                    });
+      
+                    // Handle log out (You may need to use some state management here)
+                  },
+                )
+            ],
+          ),
+        ),
+        onDrawerChanged: (isOpen) {
+          if (!isOpen) {
+            setState(() {
+              drawer_toggle = 0;
+            });
+          }
+        },
+        appBar: AppBar(
+          title: Text(
+            "Logo",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          actions: <Widget>[
+            AnimatedSearch(),
+            SizedBox(width: 5,),
+            if (!_isLoggedIn)
+              SizedBox(
+                height: 30,
+                width: 70,
+                child: FloatingActionButton(
+                  hoverElevation: 5,
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    //Navigator.pushNamed(context, './signup');
+                    Get.to(signup());
+                  },
+                  elevation: 0,
+                  child: Text('Sign Up', style: TextStyle(fontSize: 12)),
+                ),
+              ),
+            SizedBox(
+              width: 5,
+            ),
+            if (!_isLoggedIn)
+              SizedBox(
+                height: 30,
+                width: 70,
+                child: FloatingActionButton(
+                  hoverElevation: 5,
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      Get.to(signin());
+                    });
+                  },
+                  elevation: 0,
+                  child: Text('Sign In', style: TextStyle(fontSize: 12)),
+                ),
               )
+            else
+              Container(
+                height: 45,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                    shape: RoundedRectangleBorder(
+                      
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                  ),
+                  onPressed: () {
+                    Get.to(user_profile());
+                    // Add onPressed functionality here
+                  },
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage(
+                            'assets/profile_image.png'), // Replace with your image asset
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                       _username, 
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            // IconButton(
+            //   onPressed: () {
+      
+            //     // Search functionality (currently empty)
+            //   },
+            //   icon: Icon(Icons.search),
+            // ),
+            SizedBox(width: 5),
+            
           ],
         ),
-      ),
-      onDrawerChanged: (isOpen) {
-        if (!isOpen) {
-          setState(() {
-            drawer_toggle = 0;
-          });
-        }
-      },
-      appBar: AppBar(
-        title: Text(
-          "Logo",
-          style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-        actions: <Widget>[
-          AnimatedSearch(),
-          SizedBox(width: 5,),
-          if (!_isLoggedIn)
-            SizedBox(
-              height: 30,
-              width: 70,
-              child: FloatingActionButton(
-                hoverElevation: 5,
-                backgroundColor: Colors.white,
-                onPressed: () {
-                  //Navigator.pushNamed(context, './signup');
-                  Get.to(signup());
-                },
-                elevation: 0,
-                child: Text('Sign Up', style: TextStyle(fontSize: 12)),
-              ),
-            ),
-          SizedBox(
-            width: 5,
-          ),
-          if (!_isLoggedIn)
-            SizedBox(
-              height: 30,
-              width: 70,
-              child: FloatingActionButton(
-                hoverElevation: 5,
-                backgroundColor: Colors.white,
-                onPressed: () {
-                  setState(() {
-                    Get.to(signin());
-                  });
-                },
-                elevation: 0,
-                child: Text('Sign In', style: TextStyle(fontSize: 12)),
-              ),
-            )
-          else
-            Container(
-              height: 45,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  shape: RoundedRectangleBorder(
-                    
-                    borderRadius: BorderRadius.circular(10),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              //SizedBox(height: 10),
+              // Header Section
+              Stack(
+                children: [
+                  Image.network(
+                    'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    height: Get.height * 0.2,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
                   ),
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  Get.to(user_profile());
-                  // Add onPressed functionality here
-                },
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage(
-                          'assets/profile_image.png'), // Replace with your image asset
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                     _username, 
+                  Positioned(
+                    top: 50,
+                    left: 10,
+                    child: Text(
+                      'Exploring Made Easy...',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
+                ],
+              ),
+              // Category Section
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Wrap(
+                  alignment: WrapAlignment.spaceAround,
+                  runSpacing: 1,
+                  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CategoryTile(
+                      title: 'Sajek',
+                      imageUrl:
+                          'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    ),
+                    CategoryTile(
+                      title: 'Cox\'s Bazar',
+                      imageUrl:
+                          'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    ),
+                    CategoryTile(
+                      title: 'Tanguar Haor',
+                      imageUrl:
+                          'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    ),
+                    CategoryTile(
+                      title: 'Sundar Ban',
+                      imageUrl:
+                          'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                     ),
                   ],
                 ),
               ),
-            ),
-          // IconButton(
-          //   onPressed: () {
-
-          //     // Search functionality (currently empty)
-          //   },
-          //   icon: Icon(Icons.search),
-          // ),
-          SizedBox(width: 5),
-          
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            //SizedBox(height: 10),
-            // Header Section
-            Stack(
-              children: [
-                Image.network(
-                  'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                  height: Get.height * 0.2,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-                Positioned(
-                  top: 50,
-                  left: 10,
-                  child: Text(
-                    'Exploring Made Easy...',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+      
+              SizedBox(height: 10),
+              Center(
+                child: Material(
+                  elevation: 4,
+                  borderRadius: BorderRadius.circular(30),
+                  child: SizedBox(
+                    height: 30,
+                    width: Get.width * 0.7,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: InkWell(
+                                onTap: () {},
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30)),
+                                child: Center(
+                                  child: Row(
+                                    children: [
+                                      Spacer(),
+                                      Icon(
+                                        Icons.map,
+                                        size: 12,
+                                      ),
+                                      Text(
+                                        " Where To?",
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 12),
+                                      ),
+                                      Spacer(),
+                                    ],
+                                  ),
+                                ))),
+      
+                        //VerticalDivider(thickness: 0.1, color: Colors.grey[800],),
+                        Expanded(
+                            child: InkWell(
+                          onTap: () {},
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(30),
+                              bottomRight: Radius.circular(30)),
+                          child: Center(
+                            child: Row(
+                              children: [
+                                Spacer(),
+                                Icon(Icons.calendar_month, size: 12),
+                                Text(
+                                  ' When?',
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 12),
+                                ),
+                                Spacer()
+                              ],
+                            ),
+                          ),
+                        ))
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
-            // Category Section
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Wrap(
-                alignment: WrapAlignment.spaceAround,
-                runSpacing: 1,
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              SizedBox(height: 50),
+              Row(
+                //crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(width: 10),
+                  Text(
+                    "Trending Tour Packages",
+                    style: TextStyle(
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                  Spacer(),
+                  Container(
+                    height: 22, // Set the height of the container
+                    width: 70, // Set the width of the container
+                    decoration: BoxDecoration(
+                        //color: Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 1.0)),
+                    child: InkWell(
+                      onTap: () {}, //Go To the Trending page.
+                      borderRadius: BorderRadius.circular(5),
+                      child: Center(
+                        child: Text(
+                          'See More...',
+                          style: TextStyle(color: Colors.black, fontSize: 10),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
                   CategoryTile(
                     title: 'Sajek',
                     imageUrl:
                         'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                  ),
+                  SizedBox(
+                    width: 10,
                   ),
                   CategoryTile(
                     title: 'Cox\'s Bazar',
                     imageUrl:
                         'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
                   CategoryTile(
                     title: 'Tanguar Haor',
                     imageUrl:
                         'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                   ),
-                  CategoryTile(
-                    title: 'Sundar Ban',
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                  ),
                 ],
               ),
-            ),
-
-            SizedBox(height: 10),
-            Center(
-              child: Material(
-                elevation: 4,
-                borderRadius: BorderRadius.circular(30),
-                child: SizedBox(
-                  height: 30,
-                  width: Get.width * 0.7,
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: InkWell(
-                              onTap: () {},
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  bottomLeft: Radius.circular(30)),
-                              child: Center(
-                                child: Row(
-                                  children: [
-                                    Spacer(),
-                                    Icon(
-                                      Icons.map,
-                                      size: 12,
-                                    ),
-                                    Text(
-                                      " Where To?",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 12),
-                                    ),
-                                    Spacer(),
-                                  ],
-                                ),
-                              ))),
-
-                      //VerticalDivider(thickness: 0.1, color: Colors.grey[800],),
-                      Expanded(
-                          child: InkWell(
-                        onTap: () {},
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(30),
-                            bottomRight: Radius.circular(30)),
-                        child: Center(
-                          child: Row(
-                            children: [
-                              Spacer(),
-                              Icon(Icons.calendar_month, size: 12),
-                              Text(
-                                ' When?',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 12),
-                              ),
-                              Spacer()
-                            ],
-                          ),
+              SizedBox(height: 20),
+              Center(
+                child: Container(
+                  height: 40,
+                  width: Get.width * 0.95,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      child: Text(
+                        '"If you never go, you will never know."',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          //fontStyle: FontStyle.italic,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1, 1),
+                              blurRadius: 4,
+                              color: Colors.black,
+                            ),
+                          ],
                         ),
-                      ))
-                    ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 50),
-            Row(
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(width: 10),
-                Text(
-                  "Trending Tour Packages",
-                  style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
-                ),
-                Spacer(),
-                Container(
-                  height: 22, // Set the height of the container
-                  width: 70, // Set the width of the container
-                  decoration: BoxDecoration(
-                      //color: Colors.black,
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(width: 10),
+                  Text(
+                    "Hire Guides",
+                    style: TextStyle(
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15),
+                  ),
+                  Spacer(),
+                  Container(
+                    height: 22, 
+                    width: 70, 
+                    decoration: BoxDecoration(
+                        //color: Colors.black,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.black, width: 1.0)),
+                    child: InkWell(
+                      onTap: () {}, //Go To the Trending page.
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black, width: 1.0)),
-                  child: InkWell(
-                    onTap: () {}, //Go To the Trending page.
-                    borderRadius: BorderRadius.circular(5),
-                    child: Center(
-                      child: Text(
-                        'See More...',
-                        style: TextStyle(color: Colors.black, fontSize: 10),
-                        overflow: TextOverflow.ellipsis,
+                      child: Center(
+                        child: Text(
+                          'See More...',
+                          style: TextStyle(color: Colors.black, fontSize: 10),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 10),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                CategoryTile(
-                  title: 'Sajek',
-                  imageUrl:
-                      'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                CategoryTile(
-                  title: 'Cox\'s Bazar',
-                  imageUrl:
-                      'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                CategoryTile(
-                  title: 'Tanguar Haor',
-                  imageUrl:
-                      'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: Container(
-                height: 40,
-                width: Get.width * 0.95,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                    child: Text(
-                      '"If you never go, you will never know."',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 15,
-                        //fontStyle: FontStyle.italic,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(1, 1),
-                            blurRadius: 4,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  SizedBox(width: 10),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 200,
+                width: double.infinity, 
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: PageScrollPhysics(),
+                   controller: PageController(viewportFraction: 0.51), 
+                  itemCount: 8, 
+                  itemBuilder: (context,iter){
+                    return GuideTiles();
+                  },
                 ),
               ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(width: 10),
-                Text(
-                  "Hire Guides",
-                  style: TextStyle(
-                      fontFamily: 'Arial',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15),
-                ),
-                Spacer(),
-                Container(
-                  height: 22, 
-                  width: 70, 
+      
+              SizedBox(height: 10),
+              // Destinations and Travel Blog Sections
+              Center(
+                child: Container(
+                  height: 40,
+                  width: Get.width * 0.95,
                   decoration: BoxDecoration(
-                      //color: Colors.black,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.black, width: 1.0)),
-                  child: InkWell(
-                    onTap: () {}, //Go To the Trending page.
                     borderRadius: BorderRadius.circular(5),
-                    child: Center(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                       child: Text(
-                        'See More...',
-                        style: TextStyle(color: Colors.black, fontSize: 10),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              height: 200,
-              width: double.infinity, 
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: PageScrollPhysics(),
-                 controller: PageController(viewportFraction: 0.51), 
-                itemCount: 8, 
-                itemBuilder: (context,iter){
-                  return GuideTiles();
-                },
-              ),
-            ),
-
-            SizedBox(height: 10),
-            // Destinations and Travel Blog Sections
-            Center(
-              child: Container(
-                height: 40,
-                width: Get.width * 0.95,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                    child: Text(
-                      '"Travelling is a way of self healing"',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 15,
-                        //fontStyle: FontStyle.italic,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(1, 1),
-                            blurRadius: 4,
-                            color: Colors.black,
-                          ),
-                        ],
+                        '"Travelling is a way of self healing"',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          //fontStyle: FontStyle.italic,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1, 1),
+                              blurRadius: 4,
+                              color: Colors.black,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Footer(),
-          ],
+              SizedBox(
+                height: 50,
+              ),
+              Footer(),
+            ],
+          ),
         ),
       ),
     );
@@ -680,6 +687,7 @@ class _AnimatedSearchState extends State<AnimatedSearch>
                       height: 23.0,
                       width: 180.0,
                       child: TextField(
+                        autofocus: false,
                         controller: _textEditingController,
                         cursorRadius: Radius.circular(10.0),
                         cursorWidth: 2.0,
