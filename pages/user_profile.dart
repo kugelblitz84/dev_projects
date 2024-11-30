@@ -29,35 +29,40 @@ class user_profile extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 5,
-            ),
-            onPressed: () {
-              // Add onPressed functionality here
-            },
-            child: const Row(
-              children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundImage: AssetImage(
-                      'assets/profile_image.png'), // Replace with your image asset
-                ),
-                SizedBox(width: 5),
-                Text(
-                  'Sazzad',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
+          Container(
+              height: 45,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                  shape: RoundedRectangleBorder(
+                    
+                    borderRadius: BorderRadius.circular(10),
                   ),
+                  elevation: 5,
                 ),
-              ],
+                onPressed: () {
+                  Get.to(user_profile());
+                  // Add onPressed functionality here
+                },
+                child: const Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundImage: NetworkImage(
+                          'https://scontent.fdac134-1.fna.fbcdn.net/v/t39.30808-6/322129857_724753472333572_2232619784599132458_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=a5f93a&_nc_eui2=AeERORM9gMHG0GhkzTvZjGKYm7M3hvTn3WabszeG9OfdZksosfwXAK8Fu7lwBYE59ULuDRy2kfaKXd9sgBwnkWtc&_nc_ohc=E-S7LidoiwMQ7kNvgFmTdMS&_nc_zt=23&_nc_ht=scontent.fdac134-1.fna&_nc_gid=Ay7_kRTNRUsW0YxMLu7XfBN&oh=00_AYDSuC1FPAAAAeFXWljfY8KOaGGv59m60HwGlP7d57Nkrw&oe=674B5571'), // Replace with your image asset
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Sazzad',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          )
         ],
       ),
       body: SingleChildScrollView(
@@ -69,7 +74,7 @@ class user_profile extends StatelessWidget {
               children: [
                 // Cover Photo
                 Container(
-                  height: Get.height * 0.3,
+                  height: Get.height * 0.25,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
@@ -80,7 +85,7 @@ class user_profile extends StatelessWidget {
                 ),
                 // Profile Info Overlay
                 Positioned(
-                  bottom: 20,
+                  bottom: 30,
                   left: 20,
                   right: 20,
                   child: Column(
@@ -145,10 +150,10 @@ class user_profile extends StatelessWidget {
 
             // Blog Cards
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
               child: Wrap(
                 alignment: WrapAlignment.start,
-                runSpacing: 1,
+                runSpacing: 6,
                 children: [
                   AnimatedBlogCard(
                     title: "How to visit Sajek valley in Rangamati",
@@ -168,9 +173,35 @@ class user_profile extends StatelessWidget {
                     imageUrl:
                         'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Replace with real image URL
                   ),
+                  AnimatedBlogCard(
+                    title: "Kuakata Travel Guide",
+                    location: "Patuakhali",
+                    imageUrl:
+                        'https://images.unsplash.com/photo-1539967430815-b3d193609067?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Replace with real image URL
+                  ),
                 ],
               ),
             ),
+            SizedBox(height: 5,),
+            Container(
+                  height: 22, 
+                  width: 90,
+                  decoration: BoxDecoration(
+                      //color: Colors.black,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.black, width: 1.0)),
+                  child: InkWell(
+                    onTap: () {}, //Go To User vlogs page.
+                    borderRadius: BorderRadius.circular(5),
+                    child: Center(
+                      child: Text(
+                        'See All Vlogs',
+                        style: TextStyle(color: Colors.black, fontSize: 10),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
           ],
         ),
       ),
